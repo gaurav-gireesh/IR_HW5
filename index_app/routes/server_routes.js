@@ -1,4 +1,6 @@
-/***********IMPORTING the Necessary Modules ***************** */
+/**
+ * @description Importing the necessary modules 
+ */
 const express   = require('express');
 const router    = express.Router();
 const solr =   require('solr-client');
@@ -7,14 +9,18 @@ const fs =      require('fs');
 const path =    require('path');
 const map2files = require('../server');
 const speller  = require('../server');
+const config = require('../config/config');
 
 
-/************  APACHE SOLR Configuration   **********/
+/**
+*   @description Apache Solr configuration
+ * 
+ * */
 
-const solr_host     = '127.0.0.1';
-const solr_port     = 8983;
-const solr_core     ='newsday_6874110701';
-const solr_protocol = 'http://';
+const solr_host     =   config.solr_host
+const solr_port     =   config.solr_port;
+const solr_core     =   config.solr_core;
+const solr_protocol =   config.solr_protocol;
 
 //Instantiating the client
 
@@ -61,7 +67,7 @@ router.get('/search/:keyword',(req,res)=>
 
     var query = client.createQuery().q({
         '_text_': q_term
-      })
+      }).hl({'fl':'*','fragsize':0,'tag.pre':'<em><b>','tag.post':'</b></em>'});
     client.search( query, function(err, obj){
 	if(err){
 		console.log(err);
@@ -79,14 +85,16 @@ router.get('/search/:keyword',(req,res)=>
         for(i=0;i<numDocsReturned;i++)
         {  
             abspath = docsReturned[i]['id'];
-            //console.log(abspath);
-            //console.log(map2files.mymap[abspath]);
-            //console.log(map2files[abspath]+"\n");
             
-           line1=map2files.mymap[abspath];
+            
+             line1=map2files.mymap[abspath];
              newObj=obj['response']['docs'][i];
              newObj['gg_web_url']=line1;
              obj['response']['docs'][i]=newObj;
+             
+
+            
+             
             
         }
         res.json(obj);
@@ -111,7 +119,7 @@ router.get('/search_with_pageRank/:keyword',(req,res)=>
     var query = client.createQuery().q({
         '_text_': q_term,
         
-      }).sort({ pageRank :  'desc' });
+      }).hl({'fl':'*','fragsize':0,'tag':{'pre':'<em><b>','post':'</b></em>'}}).sort({ pageRank :  'desc' });
     client.search( query, function(err, obj){
 	if(err){
 		console.log(err);
@@ -129,10 +137,7 @@ router.get('/search_with_pageRank/:keyword',(req,res)=>
         for(i=0;i<numDocsReturned;i++)
         {  
             abspath = docsReturned[i]['id'];
-            //console.log(abspath);
-            //console.log(map2files.mymap[abspath]);
-            //console.log(map2files[abspath]+"\n");
-            
+           
            line1=map2files.mymap[abspath];
              newObj=obj['response']['docs'][i];
              newObj['gg_web_url']=line1;
@@ -158,7 +163,7 @@ router.get('/search_with_pageRank/:keyword',(req,res)=>
 /****  The suggest route that invokes Apache Solr Suggetser API  WITHOUT PAGE RANK*/
 router.get('/suggest/:keyword',(req,res)=>
 {
-    console.log("Coming here...");
+    // console.log("Coming here...");
    
     let q_term = req.params.keyword;
     if(q_term.length>0)

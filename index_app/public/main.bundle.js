@@ -140,7 +140,7 @@ module.exports = ""
 /***/ "./src/app/components/navbar/navbar.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container-fluid\" style=\"margin-top:2%;\">\n  <nav class=\"navbar navbar-expand-lg navbar-dark bg-darks\">\n    <a class=\"navbar-brand\" href=\"http://newsday.com\">NewsDay</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" \n    data-target=\"#navbarColor02\" aria-controls=\"navbarColor01\" aria-expanded=\"false\" aria-label=\"Toggle navigation\" >\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  \n    <div class=\"collapse navbar-collapse\" id=\"navbarColor02\">\n      <ul class=\"navbar-nav mr-auto\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" href=\"#\"(click)=\"clear()\" style=\"font-size:1.5em\">Home <span class=\"sr-only\">(current)</span></a>\n        </li>\n         </ul>\n\n      <form class=\"form-inline my-2 my-lg-0\" (submit)=\"process()\" autocomplete=\"off\" id=\"myform\" name=\"myform\">\n         <span *ngIf=\"pageRank\"style=\"font-size:1.5em\">Page Rank?&nbsp;&nbsp;</span>\n         <span *ngIf=\"!pageRank\" style=\"font-size:1.5em;color:grey;\">Lucene&nbsp;&nbsp;</span> \n        <input name=\"pageRank\" [(ngModel)]=\"pageRank\" class=\"form-check-input\" type=\"checkbox\" value=\"\" checked=\"\">\n        &nbsp;&nbsp;\n        \n        \n        <div class=\"autocomplete\" >\n          <input name=\"keyword\" id=\"keyword\" class=\"form-control mr-sm-2 \"  style=\"font-size:1.2em;\"   type=\"text\" placeholder=\"Search\" [(ngModel)]=\"keyword\"  (keyup)=\"suggest($event)\"/>\n        </div>\n\n       \n        <button class=\"btn btn-secondary my-2 my-sm-0 btn-default\" type=\"submit\"><span class=\"glyphicons glyphicons-database-search\"></span>SEARCH</button>&nbsp;&nbsp;\n       \n      </form>\n      <button class=\"btn btn-danger\" (click)=clear()>CLEAR</button>\n\n    </div>\n  </nav>\n\n\n\n\n\n\n  <!--RESULTS -->\n \n     \n\n\n\n\n\n<!-- New design for showing up results -->\n\n\n<div *ngIf=\"result && result['response']['docs'].length>0\" style=\"border:solid 4px coral;margin-top:2%;padding:1%;border-radius:20px;\">\n    <br/>\n    <br/>\n    &nbsp;&nbsp;<span *ngIf=\"correctedKeywords\" style=\"font-size:1.5em\">Did you mean  &nbsp;&nbsp;&nbsp; <b>{{this.correctedKeywords}}&nbsp;?</b></span><br/><br/>\n  <span style=\"font-size:1.5em; align-self: center;font-style:italic;\"> &nbsp;Showing results &nbsp; &nbsp; &nbsp; &nbsp; 1 - {{min(10,result['response']['numFound'])}} &nbsp; of &nbsp;&nbsp;  <strong>{{result['response']['numFound']}}</strong>&nbsp;&nbsp;&nbsp;for : &nbsp;&nbsp;&nbsp; <span *ngIf=\"!correctedKeywords\"><strong><i>{{keywordStatic}}</i></strong></span>\n  <span *ngIf=\"correctedKeywords\"><strong><i>{{correctedKeywords}}</i></strong></span>\n</span>\n          \n  <br>\n  <br><br/>\n  \n\n\n\n\n\n\n\n\n<div  *ngFor=\"let doc of result['response']['docs']; let i = index\"   style=\"border-radius:10px;\"  >\n \n <div  style=\"background:white\">\n\n\n <div  class=\"docTitle\">\n\n   <a  style=\"text-decoration: underline\" *ngIf=\"doc['og_url'] && doc['og_url'].length>0\"style=\"font-size:1em\" href=\"{{doc['og_url'][0]}}\" target=\"_blank\">\n     {{doc['title']}}\n    </a>\n   <a  style=\"text-decoration: underline\" *ngIf=\"!(doc['og_url'] && doc['og_url'].length>0)\"style=\"font-size:1em\" href=\"{{doc['gg_web_url']}}\" target=\"_blank\">\n     {{doc['title']}}\n    </a>\n\n </div>\n\n<br/>\n <div class=\"docLink\">\n   <a   *ngIf=\"doc['og_url'] && doc['og_url'].length>0\"style=\"font-size:1em;font-color:black;\" href=\"{{doc['og_url'][0]}}\" target=\"_blank\">\n     <span style=\"color:green;\">{{doc['og_url'][0]}}</span>\n    </a>\n   <a  *ngIf=\"!(doc['og_url'] && doc['og_url'].length>0)\"style=\"cfont-size:1em;font-color:black;\" href=\"{{doc['gg_web_url']}}\" target=\"_blank\">\n     <span style=\"color:green;\">{{doc['gg_web_url']}}\n\n     </span></a>\n\n\n </div>\n\n<br/>\n \n\n <!-- <div  class=\"docSnippet\">\n     <span  *ngIf=\"doc['og_description'] && doc['og_description'].length>0\"style=\"font-size:1em\" >\n       {{doc['og_description'][0]}}\n      </span>\n     <span *ngIf=\"!(doc['og_description'] && doc['og_description'].length>0)\"style=\"font-size:1em\" >\n       N/A\n      </span>\n\n </div> -->\n <div  class=\"docSnippet\">\n  <span  style=\"font-size:1em\" >\n    {{generate_snippet(doc)}}\n   </span>\n  \n\n</div>\n\n \n\n  </div>\n\n <hr style=\"color:red;\">\n <br/>\n</div>\n\n\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n\n\n  </div>\n\n\n\n\n\n\n\n\n\n  <!-- Custom autocomplete related scripts -->\n"
+module.exports = "<div class=\"container-fluid\" style=\"margin-top:2%;\">\n  <nav class=\"navbar navbar-expand-lg navbar-dark bg-darks\">\n    <a class=\"navbar-brand\" href=\"http://newsday.com\">NewsDay</a>\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" \n    data-target=\"#navbarColor02\" aria-controls=\"navbarColor01\" aria-expanded=\"false\" aria-label=\"Toggle navigation\" >\n      <span class=\"navbar-toggler-icon\"></span>\n    </button>\n  \n    <div class=\"collapse navbar-collapse\" id=\"navbarColor02\">\n      <ul class=\"navbar-nav mr-auto\">\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" href=\"#\"(click)=\"clear()\" style=\"font-size:1.2em\">Home <span class=\"sr-only\">(current)</span></a>\n        </li>\n         </ul>\n\n      <form class=\"form-inline my-2 my-lg-0\" (submit)=\"process()\" autocomplete=\"off\" id=\"myform\" name=\"myform\">\n         <span *ngIf=\"pageRank\"style=\"font-size:1.5em\">Page Rank?&nbsp;&nbsp;</span>\n         <span *ngIf=\"!pageRank\" style=\"font-size:1.2em;color:grey;\">Lucene&nbsp;&nbsp;</span> \n        <input name=\"pageRank\" [(ngModel)]=\"pageRank\" class=\"form-check-input\" type=\"checkbox\" value=\"\" checked=\"\">\n        &nbsp;&nbsp;\n        \n        \n        <div class=\"autocomplete\" >\n          <input name=\"keyword\" id=\"keyword\" class=\"form-control mr-sm-2 \"  style=\"font-size:1em;\"   type=\"text\" placeholder=\"Search\" [(ngModel)]=\"keyword\"  (keyup)=\"suggest($event)\"/>\n        </div>\n\n       \n        <button class=\"btn btn-secondary my-2 my-sm-0 btn-default\" type=\"submit\"><span class=\"glyphicons glyphicons-database-search\"></span>SEARCH</button>&nbsp;&nbsp;\n       \n      </form>\n      <button class=\"btn btn-danger\" (click)=clear()>CLEAR</button>\n\n    </div>\n  </nav>\n\n\n\n\n\n\n  <!--RESULTS -->\n \n     \n\n\n\n\n\n<!-- New design for showing up results -->\n\n\n<div *ngIf=\"result && result['response']['docs'].length>0\" style=\"border:solid 4px coral;margin-top:2%;padding:1%;border-radius:20px;\">\n    <br/>\n    <br/>\n    &nbsp;&nbsp;<span *ngIf=\"correctedKeywords\" style=\"font-size:1.5em\">Did you mean  &nbsp;&nbsp;&nbsp; <b>{{this.correctedKeywords}}&nbsp;?</b></span><br/><br/>\n  <span style=\"font-size:1.5em; align-self: center;font-style:italic;\"> &nbsp;Showing results &nbsp; &nbsp; &nbsp; &nbsp; 1 - {{min(10,result['response']['numFound'])}} &nbsp; of &nbsp;&nbsp;  <strong>{{result['response']['numFound']}}</strong>&nbsp;&nbsp;&nbsp;for : &nbsp;&nbsp;&nbsp; <span *ngIf=\"!correctedKeywords\"><strong><i>{{keywordStatic}}</i></strong></span>\n  <span *ngIf=\"correctedKeywords\"><strong><i>{{correctedKeywords}}</i></strong></span>\n</span>\n          \n  <br>\n  <br><br/>\n  \n\n\n\n\n\n\n\n\n<div  class=\"resultBox\"*ngFor=\"let doc of result['response']['docs']; let i = index\"   style=\"border-radius:10px;\"  >\n \n <div  style=\"background:white\" class=\"{{'hello'+keyword}}\">\n\n\n <div  class=\"docTitle\">\n\n   <a  style=\"text-decoration: underline\" *ngIf=\"doc['og_url'] && doc['og_url'].length>0\"style=\"font-size:1em\" href=\"{{doc['og_url'][0]}}\" target=\"_blank\">\n     {{doc['title']}}\n    </a>\n   <a  style=\"text-decoration: underline\" *ngIf=\"!(doc['og_url'] && doc['og_url'].length>0)\"style=\"font-size:1em\" href=\"{{doc['gg_web_url']}}\" target=\"_blank\">\n     {{doc['title']}}\n    </a>\n\n </div>\n\n<br/>\n <div class=\"docLink\">\n   <a   *ngIf=\"doc['og_url'] && doc['og_url'].length>0\"style=\"font-size:1em;font-color:black;\" href=\"{{doc['og_url'][0]}}\" target=\"_blank\">\n     <span style=\"color:green;\">{{doc['og_url'][0]}}</span>\n    </a>\n   <a  *ngIf=\"!(doc['og_url'] && doc['og_url'].length>0)\"style=\"cfont-size:1em;font-color:black;\" href=\"{{doc['gg_web_url']}}\" target=\"_blank\">\n     <span style=\"color:green;\">{{doc['gg_web_url']}}\n\n     </span></a>\n\n\n </div>\n\n<br/>\n \n\n <!-- <div  class=\"docSnippet\">\n     <span  *ngIf=\"doc['og_description'] && doc['og_description'].length>0\"style=\"font-size:1em\" >\n       {{doc['og_description'][0]}}\n      </span>\n     <span *ngIf=\"!(doc['og_description'] && doc['og_description'].length>0)\"style=\"font-size:1em\" >\n       N/A\n      </span>\n\n </div> -->\n <div  class=\"docSnippet\">\n  \n  \n   <div    class=\"{{keyword+doc['id']}}\"  style=\"font-size:1em\" >\n   \n   </div>\n   {{generate_snippet_2(doc['id'])}}\n  \n\n</div>\n\n \n\n  </div>\n\n <hr >\n <br/>\n</div>\n\n\n</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n    \n\n\n  </div>\n\n\n\n\n\n\n\n\n\n  <!-- Custom autocomplete related scripts -->\n"
 
 /***/ }),
 
@@ -200,14 +200,15 @@ var NavbarComponent = /** @class */ (function () {
                 var numWords_1 = this.keyword.split(" ").length;
                 if (numWords_1 == 1) {
                     this.spellingService.spell(this.keyword).subscribe(function (correct) {
-                        if (_this.keyword.trim() == correct.correct.trim())
+                        if (_this.keyword.trim().toLowerCase() == correct.correct.trim().toLowerCase())
                             _this.correctedKeywords = null;
                         else
                             _this.correctedKeywords = correct.correct.trim();
-                        console.log("Then corrected keyword is");
+                        // console.log("Then corrected keyword is");
                         _this.searchService.search(correct.correct).subscribe(function (data) {
                             //this.correctedKeywords=correct.correct;
                             _this.result = data;
+                            // console.dir(data);
                             if (_this.result['response']['docs'].length == 0) {
                                 _this.flash.show("No result found!", { cssClass: 'alert-warning', timeout: 5000 });
                                 return false;
@@ -235,7 +236,7 @@ var NavbarComponent = /** @class */ (function () {
                         }
                     });
                     var cb = function (c) {
-                        if (c.trim() === _this.keyword.trim()) {
+                        if (c.trim().toLowerCase() === _this.keyword.trim().toLowerCase()) {
                             _this.correctedKeywords = null;
                         }
                         else {
@@ -258,10 +259,10 @@ var NavbarComponent = /** @class */ (function () {
                 var numWords_2 = this.keyword.split(" ").length;
                 if (numWords_2 == 1) {
                     this.spellingService.spell(this.keyword).subscribe(function (correct) {
-                        if (_this.keyword.trim() == correct.correct.trim())
+                        if (_this.keyword.toLowerCase().trim() == correct.correct.toLowerCase().trim())
                             _this.correctedKeywords = null;
                         else
-                            _this.correctedKeywords = correct.correct.trim();
+                            _this.correctedKeywords = correct.correct.toLowerCase().trim();
                         //console.log("Then corrected keyword is");
                         _this.searchService.search_with_pageRank(correct.correct).subscribe(function (data) {
                             //this.correctedKeywords=correct.correct;
@@ -295,7 +296,7 @@ var NavbarComponent = /** @class */ (function () {
                     var cb = function (c) {
                         // console.log("C = "+c.trim());
                         // console.log(" Current keyword "+this.keyword);
-                        if (c.trim() === _this.keyword.trim()) {
+                        if (c.toLowerCase().trim() === _this.keyword.toLowerCase().trim()) {
                             _this.correctedKeywords = null;
                         }
                         else {
@@ -492,6 +493,35 @@ var NavbarComponent = /** @class */ (function () {
             }
             return "EMPTY";
         }
+    };
+    /**
+     * @description Generates the snippet
+     */
+    NavbarComponent.prototype.generate_snippet_2 = function (index) {
+        var cl = document.getElementsByClassName(this.keyword + index);
+        //let final_highlight="";
+        var highlights = "";
+        highlights = this.result['highlighting'][index]['og_description'];
+        if (!highlights) {
+            highlights = this.result['highlighting'][index]['description'];
+        }
+        if (!highlights) {
+            highlights = this.result['highlighting'][index]['og_title'];
+        }
+        if (!highlights) {
+            highlights = this.result['highlighting'][index]['title'];
+        }
+        if (!highlights) {
+            highlights = this.result['highlighting'][index][0];
+        }
+        if (!highlights)
+            highlights = "<b>NA</b>";
+        var str_equiv = (highlights);
+        //console.log(str_equiv.replace(/<em>/gi,"<b>"));   
+        str_equiv = String(str_equiv).replace(/<em>/gi, "<em><b>").replace(/<\/em>/gi, "</b></em>");
+        //console.log(str_equiv.length);
+        console.log(str_equiv);
+        cl[0].innerHTML = String(str_equiv).substr(0, 160) + ((str_equiv.length <= 160) ? "" : "...");
     };
     NavbarComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
