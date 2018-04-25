@@ -70,7 +70,7 @@ for(var i=0;    i<lendocs;  i++)
 
 // }));
 
-fs.readFile(path.dirname(require.main.filename)+"/public/big_1.txt","utf-8",(err,data) => {
+fs.readFile(path.dirname(require.main.filename)+"/public/big.txt","utf-8",(err,data) => {
     if(err) throw err;
     speller.train(data);
     console.log("Speller trained!!!!");
